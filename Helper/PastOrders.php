@@ -193,6 +193,13 @@ class PastOrders extends AbstractHelper
             $sales_collection->setCurPage($page_id)->load();
             $orders = array();
             foreach($sales_collection as $order) {
+                $dataWithProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after');
+                if(!count(array_intersect(
+                    \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS,
+                    $dataWithProduct['productIds']))){
+                    continue;
+                }
+
                 array_push($orders, $this->_orderData->getInvitation($order, 'past-orders', $collect_product_data));
             }
             $sales_collection->clear();
