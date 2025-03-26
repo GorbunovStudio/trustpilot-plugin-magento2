@@ -47,19 +47,25 @@ class OrderSaveObserver implements ObserverInterface
 
         try {
             if (isset($key) && $order->getState() != $order->getOrigData('state')) {
-                $data = $this->_orderData->getInvitation($order, 'sales_order_save_after', \Trustpilot\Reviews\Model\Config::WITHOUT_PRODUCT_DATA);
+                $dataWithoutProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after', \Trustpilot\Reviews\Model\Config::WITHOUT_PRODUCT_DATA);
+                $dataWithProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after');
+
+                if(!count(array_intersect(
+                    \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS,
+                    $dataWithProduct['productIds']))){
+                    return;
+                }
 
                 if (in_array($orderStatus, $settings->general->mappedInvitationTrigger)) {
-                    $response = $this->_trustpilotHttpClient->postInvitation($key, $storeId, $data);
+                    $response = $this->_trustpilotHttpClient->postInvitation($key, $storeId, $dataWithoutProduct);
 
                     if ($response['code'] == __ACCEPTED__) {
-                        $data = $this->_orderData->getInvitation($order, 'sales_order_save_after', \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA);
-                        $response = $this->_trustpilotHttpClient->postInvitation($key, $storeId, $data);
+                        $response = $this->_trustpilotHttpClient->postInvitation($key, $storeId, $dataWithProduct);
                     }
-                    $this->handleSingleResponse($response, $data, $storeId);
+                    $this->handleSingleResponse($response, $dataWithProduct, $storeId);
                 } else {
-                    $data['payloadType'] = 'OrderStatusUpdate';
-                    $this->_trustpilotHttpClient->postInvitation($key, $storeId, $data);
+                    $dataWithoutProduct['payloadType'] = 'OrderStatusUpdate';
+                    $this->_trustpilotHttpClient->postInvitation($key, $storeId, $dataWithoutProduct);
                 }
             }
         } catch (\Throwable $e) {

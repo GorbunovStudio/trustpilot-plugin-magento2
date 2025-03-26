@@ -64,6 +64,7 @@ class OrderData extends AbstractHelper
                 $products = $this->getProducts($order);
                 $invitation['products'] = $products;
                 $invitation['productSkus'] = $this->getSkus($products);
+                $invitation['productIds'] = $this->getProductsIds($products);
             }
         }
         return $invitation;
@@ -145,6 +146,15 @@ class OrderData extends AbstractHelper
             array_push($skus, $product['sku']);
         }
         return $skus;
+    }
+
+    public function getProductsIds(array $products): array
+    {
+        $productIds = array();
+        foreach ($products as $product) {
+            array_push($productIds, $product['productId']);
+        }
+        return $productIds;
     }
 
     public function is_empty($var)

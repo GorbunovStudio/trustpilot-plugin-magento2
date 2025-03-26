@@ -7,6 +7,8 @@ class Config
     // example of usage - \Trustpilot\Reviews\Model\Config::TRUSTPILOT_IS_FROM_MARKETPLACE
     const WITH_PRODUCT_DATA                     = 'WITH_PRODUCT_DATA';
     const WITHOUT_PRODUCT_DATA                  = 'WITHOUT_PRODUCT_DATA';
+
+    const TRUSTPILOT_EXPORTED_PRODUCT_IDS = [2];
     const TRUSTPILOT_MASTER_FIELD               = 'trustpilot_master_settings_field';
     const TRUSTPILOT_ORDER_DATA                 = 'OrderData';
     const TRUSTPILOT_SYNC_IN_PROGRESS           = 'trustpilot_sync_in_progress';
