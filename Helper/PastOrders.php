@@ -191,7 +191,7 @@ class PastOrders extends AbstractHelper
     {
         if ($page_id <= $sales_collection->getLastPageNumber()) {
             $sales_collection->setCurPage($page_id)->load();
-            $orders = array();
+            $orders = [];
             foreach($sales_collection as $order) {
                 $dataWithProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after');
                 if(!count(array_intersect(

@@ -141,20 +141,18 @@ class OrderData extends AbstractHelper
 
     public function getSkus($products)
     {
-        $skus = array();
-        foreach ($products as $product) {
-            array_push($skus, $product['sku']);
-        }
-        return $skus;
+        return array_map(
+            fn(array $product): string => $product['sku'],
+            $products
+        );
     }
 
     public function getProductsIds(array $products): array
     {
-        $productIds = array();
-        foreach ($products as $product) {
-            array_push($productIds, (int)$product['productId']);
-        }
-        return $productIds;
+        return array_map(
+            fn(array $product): int => (int)$product['productId'],
+            $products
+        );
     }
 
     public function is_empty($var)
