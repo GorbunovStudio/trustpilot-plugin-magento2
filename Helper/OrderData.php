@@ -152,7 +152,7 @@ class OrderData extends AbstractHelper
     {
         $productIds = array();
         foreach ($products as $product) {
-            array_push($productIds, $product['productId']);
+            array_push($productIds, (int)$product['productId']);
         }
         return $productIds;
     }
