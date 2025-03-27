@@ -194,7 +194,7 @@ class PastOrders extends AbstractHelper
             $orders = [];
             foreach($sales_collection as $order) {
                 $dataWithProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after');
-                if(!count(array_intersect(
+                if(empty(array_intersect(
                     \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS,
                     $dataWithProduct['productIds']))){
                     continue;

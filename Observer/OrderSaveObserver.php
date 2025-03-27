@@ -50,7 +50,7 @@ class OrderSaveObserver implements ObserverInterface
                 $dataWithoutProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after', \Trustpilot\Reviews\Model\Config::WITHOUT_PRODUCT_DATA);
                 $dataWithProduct = $this->_orderData->getInvitation($order, 'sales_order_save_after');
 
-                if(!count(array_intersect(
+                if(empty(array_intersect(
                     \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS,
                     $dataWithProduct['productIds']))){
                     return;
