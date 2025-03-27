@@ -1,0 +1,15 @@
+{
+    "intelephense.environment.phpVersion": "8.2.27",
+    "intelephense.phpdoc.useFullyQualifiedNames": true,
+    "intelephense.compatibility.preferPsalmPhpstanPrefixedAnnotations": true,
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modifications",
+    "xml.format.maxLineWidth": 140,
+    "xmlTools.splitAttributesOnFormat": true,
+    "cSpell.words": [
+        "Trustpilot",
+    ],
+}
