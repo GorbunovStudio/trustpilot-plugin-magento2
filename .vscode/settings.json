@@ -1,0 +1,32 @@
+{
+    "intelephense.environment.phpVersion": "8.2.27",
+    "intelephense.phpdoc.useFullyQualifiedNames": true,
+    "intelephense.compatibility.preferPsalmPhpstanPrefixedAnnotations": true,
+    "phpstan.checkValidity": false,
+    "phpstan.showTypeOnHover": true,
+    "[php]": {
+        "editor.defaultFormatter": "bmewburn.vscode-intelephense-client"
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "modifications",
+    "xml.format.maxLineWidth": 140,
+    "xmlTools.splitAttributesOnFormat": true,
+    "cSpell.words": [
+        "Trustpilot",
+    ],
+    "github.copilot.chat.reviewSelection.instructions": [
+        {
+            "file": ".github/.copilot-instructions.md"
+        },
+    ],
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+            "file": ".github/.copilot-instructions.md"
+        },
+    ],
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "file": ".github/.copilot-commit-message-instructions.md"
+        }
+    ],
+}
