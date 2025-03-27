@@ -14,4 +14,19 @@
     "cSpell.words": [
         "Trustpilot",
     ],
+    "github.copilot.chat.reviewSelection.instructions": [
+        {
+            "file": ".github/.copilot-instructions.md"
+        },
+    ],
+    "github.copilot.chat.codeGeneration.instructions": [
+        {
+            "file": ".github/.copilot-instructions.md"
+        },
+    ],
+    "github.copilot.chat.commitMessageGeneration.instructions": [
+        {
+            "file": ".github/.copilot-commit-message-instructions.md"
+        }
+    ],
 }
