@@ -84,7 +84,6 @@ class OrderData extends AbstractHelper
             if ($collect_product_data == \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA) {
                 $invitation['products'] = $products;
                 $invitation['productSkus'] = $this->getSkus($products);
-                $invitation['productIds'] = $this->getProductsIds($products);
             }
         }
         return $invitation;
