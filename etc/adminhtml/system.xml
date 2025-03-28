@@ -18,6 +18,10 @@
                 <field id="trustpilot_admin" type="text" showInDefault="0" showInWebsite="1" showInStore="1">
                     <frontend_model>Trustpilot\Reviews\Block\System\Config\Admin</frontend_model>
                 </field>
+                <field id="exported_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Exported Ids</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized</backend_model>
+                </field>
             </group>
         </section>
     </system>

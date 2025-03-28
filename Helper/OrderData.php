@@ -34,6 +34,15 @@ class OrderData extends AbstractHelper
     public function getInvitation($order, $hook, $collect_product_data = \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA)
     {
         $invitation = null;
+        $products = $this->getProducts($order);
+        $productsIds = $this->getProductsIds($products);
+
+        if(empty(array_intersect(
+            \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS,
+            $productsIds))){
+            return null;
+        }
+
         if (!is_null($order)) {
             $invitation = array();
             $invitation['recipientEmail'] = trim($this->getEmail($order));
@@ -61,7 +70,6 @@ class OrderData extends AbstractHelper
             }
 
             if ($collect_product_data == \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA) {
-                $products = $this->getProducts($order);
                 $invitation['products'] = $products;
                 $invitation['productSkus'] = $this->getSkus($products);
                 $invitation['productIds'] = $this->getProductsIds($products);
@@ -141,10 +149,11 @@ class OrderData extends AbstractHelper
 
     public function getSkus($products)
     {
-        return array_map(
-            fn(array $product): string => $product['sku'],
-            $products
-        );
+        $skus = array();
+        foreach ($products as $product) {
+            array_push($skus, $product['sku']);
+        }
+        return $skus;
     }
 
     public function getProductsIds(array $products): array
