@@ -43,7 +43,7 @@ class OrderData extends AbstractHelper
         $productsIds = $this->getProductsIds($products);
 
         $exportedIdsStr = $this->_scopeConfig->getValue(
-            \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTABLE_PRODUCT_IDS_CONFIG,
+            \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTABLE_PRODUCT_IDS,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 

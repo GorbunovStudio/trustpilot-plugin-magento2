@@ -19,7 +19,7 @@
                     <frontend_model>Trustpilot\Reviews\Block\System\Config\Admin</frontend_model>
                 </field>
                 <field id="exportable_products_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Exported Ids</label>
+                    <label>Exportable Products Ids</label>
                 </field>
             </group>
         </section>

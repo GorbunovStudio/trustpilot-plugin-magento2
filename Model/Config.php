@@ -8,7 +8,7 @@ class Config
     const WITH_PRODUCT_DATA                     = 'WITH_PRODUCT_DATA';
     const WITHOUT_PRODUCT_DATA                  = 'WITHOUT_PRODUCT_DATA';
 
-    const TRUSTPILOT_EXPORTABLE_PRODUCT_IDS_CONFIG = 'trustpilotGeneral/general/exportable_products_ids';
+    const TRUSTPILOT_EXPORTABLE_PRODUCT_IDS     = 'trustpilotGeneral/general/exportable_products_ids';
     const TRUSTPILOT_MASTER_FIELD               = 'trustpilot_master_settings_field';
     const TRUSTPILOT_ORDER_DATA                 = 'OrderData';
     const TRUSTPILOT_SYNC_IN_PROGRESS           = 'trustpilot_sync_in_progress';
