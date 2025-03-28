@@ -8,6 +8,7 @@ use \Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Store\Model\ScopeInterface as StoreScopeInterface;
 use \Magento\Catalog\Model\ProductFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class OrderData extends AbstractHelper
 {
@@ -16,19 +17,23 @@ class OrderData extends AbstractHelper
     protected $_categoryCollectionFactory;
     protected $_productFactory;
     protected $_trustpilotLog;
+    protected $_scopeConfig;
 
     public function __construct(
         StoreManagerInterface $storeManager,
         Data $helper,
         CategoryCollectionFactory $categoryCollectionFactory,
         TrustpilotLog $trustpilotLog,
-        ProductFactory $_productFactory)
+        ProductFactory $_productFactory,
+        ScopeConfigInterface $scopeConfig
+    )
     {
         $this->_storeManager = $storeManager;
         $this->_helper = $helper;
         $this->_categoryCollectionFactory = $categoryCollectionFactory;
         $this->_trustpilotLog = $trustpilotLog;
         $this->_productFactory = $_productFactory;
+        $this->_scopeConfig = $scopeConfig;
     }
 
     public function getInvitation($order, $hook, $collect_product_data = \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA)
@@ -37,8 +42,21 @@ class OrderData extends AbstractHelper
         $products = $this->getProducts($order);
         $productsIds = $this->getProductsIds($products);
 
+        $exportedIdsStr = $this->_scopeConfig->getValue(
+            \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS_CONFIG,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        if (!empty($exportedIdsStr)) {
+            $exportedIds = array_map('trim', explode(',', $exportedIdsStr));
+            $exportedIds = array_filter($exportedIds, 'is_numeric');
+            $exportedIds = array_map('intval', $exportedIds);
+        } else {
+            $exportedIds = [];
+        }
+
         if(empty(array_intersect(
-            \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTED_PRODUCT_IDS,
+            $exportedIds,
             $productsIds))){
             return null;
         }
