@@ -20,7 +20,6 @@
                 </field>
                 <field id="exported_ids" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Exported Ids</label>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized</backend_model>
                 </field>
             </group>
         </section>

@@ -47,13 +47,7 @@ class OrderData extends AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 
-        if (!empty($exportedIdsStr)) {
-            $exportedIds = array_map('trim', explode(',', $exportedIdsStr));
-            $exportedIds = array_filter($exportedIds, 'is_numeric');
-            $exportedIds = array_map('intval', $exportedIds);
-        } else {
-            $exportedIds = [];
-        }
+        $exportedIds = array_map('intval', array_filter(array_map('trim', explode(',', $exportedIdsStr)), 'is_numeric'));
 
         if(empty(array_intersect(
             $exportedIds,
