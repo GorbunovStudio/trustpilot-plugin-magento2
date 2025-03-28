@@ -42,15 +42,18 @@ class OrderData extends AbstractHelper
         $products = $this->getProducts($order);
         $productsIds = $this->getProductsIds($products);
 
-        $exportedIdsStr = $this->_scopeConfig->getValue(
+        $exportableProducts = $this->_scopeConfig->getValue(
             \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTABLE_PRODUCT_IDS,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 
-        $exportedIds = array_map('intval', array_filter(array_map('trim', explode(',', $exportedIdsStr)), 'is_numeric'));
+        $exportableProductsIds = explode(',', $exportableProducts);
+        $exportableProductsIds = array_map('trim', $exportableProductsIds);
+        $exportableProductsIds = array_filter($exportableProductsIds, 'is_numeric');
+        $exportableProductsIds = array_map('intval', $exportableProductsIds);
 
         if(empty(array_intersect(
-            $exportedIds,
+            $exportableProductsIds,
             $productsIds))){
             return null;
         }
