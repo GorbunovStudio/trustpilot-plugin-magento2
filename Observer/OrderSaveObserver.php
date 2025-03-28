@@ -13,14 +13,14 @@ use Trustpilot\Reviews\Helper\TrustpilotLog;
 define('__ACCEPTED__', 202);
 
 class OrderSaveObserver implements ObserverInterface
-{   
+{
 
     protected $_trustpilotHttpClient;
     protected $_orderData;
     protected $_helper;
     protected $_config;
     protected $_trustpilotLog;
-    
+
     public function __construct(
         TrustpilotHttpClient $trustpilotHttpClient,
         OrderData $orderData,
@@ -34,8 +34,8 @@ class OrderSaveObserver implements ObserverInterface
         $this->_config = $config;
         $this->_trustpilotLog = $trustpilotLog;
     }
-  
-    public function execute(EventObserver $observer) 
+
+    public function execute(EventObserver $observer)
     {
         $event = $observer->getEvent();
         $order = $event->getOrder();
@@ -48,6 +48,10 @@ class OrderSaveObserver implements ObserverInterface
         try {
             if (isset($key) && $order->getState() != $order->getOrigData('state')) {
                 $data = $this->_orderData->getInvitation($order, 'sales_order_save_after', \Trustpilot\Reviews\Model\Config::WITHOUT_PRODUCT_DATA);
+
+                if(!$data){
+                    return;
+                }
 
                 if (in_array($orderStatus, $settings->general->mappedInvitationTrigger)) {
                     $response = $this->_trustpilotHttpClient->postInvitation($key, $storeId, $data);

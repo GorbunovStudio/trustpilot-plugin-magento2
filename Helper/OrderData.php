@@ -8,6 +8,7 @@ use \Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCollectionFactory;
 use Magento\Store\Model\ScopeInterface as StoreScopeInterface;
 use \Magento\Catalog\Model\ProductFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class OrderData extends AbstractHelper
 {
@@ -16,24 +17,47 @@ class OrderData extends AbstractHelper
     protected $_categoryCollectionFactory;
     protected $_productFactory;
     protected $_trustpilotLog;
+    protected $_scopeConfig;
 
     public function __construct(
         StoreManagerInterface $storeManager,
         Data $helper,
         CategoryCollectionFactory $categoryCollectionFactory,
         TrustpilotLog $trustpilotLog,
-        ProductFactory $_productFactory)
+        ProductFactory $_productFactory,
+        ScopeConfigInterface $scopeConfig
+    )
     {
         $this->_storeManager = $storeManager;
         $this->_helper = $helper;
         $this->_categoryCollectionFactory = $categoryCollectionFactory;
         $this->_trustpilotLog = $trustpilotLog;
         $this->_productFactory = $_productFactory;
+        $this->_scopeConfig = $scopeConfig;
     }
 
     public function getInvitation($order, $hook, $collect_product_data = \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA)
     {
         $invitation = null;
+        $products = $this->getProducts($order);
+        $productsIds = $this->getProductsIds($products);
+
+        $exportableProducts = $this->_scopeConfig->getValue(
+            \Trustpilot\Reviews\Model\Config::TRUSTPILOT_EXPORTABLE_PRODUCT_IDS,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
+
+        $exportableProductsIds = explode(',', $exportableProducts);
+        $exportableProductsIds = array_map('trim', $exportableProductsIds);
+        $exportableProductsIds = array_filter($exportableProductsIds, 'is_numeric');
+        $exportableProductsIds = array_map('intval', $exportableProductsIds);
+
+        if(empty(array_intersect(
+            $exportableProductsIds,
+            $productsIds))){
+            return null;
+        }
+
         if (!is_null($order)) {
             $invitation = array();
             $invitation['recipientEmail'] = trim($this->getEmail($order));
@@ -61,7 +85,6 @@ class OrderData extends AbstractHelper
             }
 
             if ($collect_product_data == \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA) {
-                $products = $this->getProducts($order);
                 $invitation['products'] = $products;
                 $invitation['productSkus'] = $this->getSkus($products);
             }
@@ -145,6 +168,14 @@ class OrderData extends AbstractHelper
             array_push($skus, $product['sku']);
         }
         return $skus;
+    }
+
+    public function getProductsIds(array $products): array
+    {
+        return array_map(
+            fn(array $product): int => (int)$product['productId'],
+            $products
+        );
     }
 
     public function is_empty($var)

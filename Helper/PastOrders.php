@@ -178,7 +178,7 @@ class PastOrders extends AbstractHelper
             'limit' => 20,
             'past_order_statuses' => json_decode($this->_helper->getConfig('master_settings_field', $storeId, $scope))->pastOrderStatuses
         );
-        
+
         $collection = $this->_orders->getCollection()
             ->addAttributeToFilter('state', array('in' => $args['past_order_statuses']))
             ->addAttributeToFilter('created_at', array('gteq' => $args['date_created']))
@@ -193,7 +193,12 @@ class PastOrders extends AbstractHelper
             $sales_collection->setCurPage($page_id)->load();
             $orders = array();
             foreach($sales_collection as $order) {
-                array_push($orders, $this->_orderData->getInvitation($order, 'past-orders', $collect_product_data));
+                $order = $this->_orderData->getInvitation($order, 'past-orders', $collect_product_data);
+                if(!$order){
+                    continue;
+                }
+
+                array_push($orders, $order);
             }
             $sales_collection->clear();
             return $orders;

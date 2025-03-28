@@ -59,6 +59,10 @@ class Success extends Template
             $general_settings = json_decode($this->_helper->getConfig('master_settings_field', $storeId, StoreScopeInterface::SCOPE_STORES))->general;
             $data = $this->_orderData->getInvitation($order, 'magento2_success', \Trustpilot\Reviews\Model\Config::WITH_PRODUCT_DATA);
 
+            if(!$data){
+                return json_encode([]);
+            }
+
             try {
                 $data['totalCost'] = $order->getGrandTotal();
                 $data['currency'] = $order->getOrderCurrencyCode();
