@@ -46,7 +46,7 @@ class OrderSaveObserver implements ObserverInterface
         $key = $settings->general->key;
 
         try {
-            if (isset($key) && $order->getState() != $order->getOrigData('state')) {
+            if (!empty($key) && $order->getState() != $order->getOrigData('state')) {
                 $data = $this->_orderData->getInvitation($order, 'sales_order_save_after', \Trustpilot\Reviews\Model\Config::WITHOUT_PRODUCT_DATA);
 
                 if(!$data){
