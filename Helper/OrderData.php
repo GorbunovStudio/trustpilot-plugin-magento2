@@ -47,7 +47,7 @@ class OrderData extends AbstractHelper
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 
-        $exportableProductsIds = explode(',', $exportableProducts);
+        $exportableProductsIds = explode(',', $exportableProducts ?? '');
         $exportableProductsIds = array_map('trim', $exportableProductsIds);
         $exportableProductsIds = array_filter($exportableProductsIds, 'is_numeric');
         $exportableProductsIds = array_map('intval', $exportableProductsIds);
@@ -218,7 +218,7 @@ class OrderData extends AbstractHelper
                     'mpn' => $mpn ? $mpn : '',
                     'gtin' => $gtin ? $gtin : '',
                     'imageUrl' => $this->_storeManager->getStore($storeId)->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA)
-                        . 'catalog/product/' . ltrim($product->getImage(), '/')
+                        . 'catalog/product/' . ltrim($product->getImage() ?? '', '/')
                 );
 
                 $productData = $this->getProductExtraFields($productData, $product, $childProducts, $order);
