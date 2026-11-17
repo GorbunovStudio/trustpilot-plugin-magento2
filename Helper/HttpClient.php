@@ -27,7 +27,6 @@ class HttpClient extends AbstractHelper
             $responseData = json_decode($content);
             $responseInfo = curl_getinfo($ch);
             $responseCode = $responseInfo['http_code'];
-            curl_close($ch);
             $response = array();
             $response['code'] = $responseCode;
             if (is_object($responseData) || is_array($responseData)) {
